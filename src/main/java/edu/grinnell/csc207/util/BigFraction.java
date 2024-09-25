@@ -4,16 +4,22 @@ import java.math.BigInteger;
 
 /**
  * Creates and applies methods on a value of type BigFraction.
- * 
+ *
  * @author Samuel Rebelsky, modified by Jafar Jarrar.
  */
 public class BigFraction {
 
   /** The numerator of the fraction. Can be positive, zero or negative. */
-  BigInteger num;
+  private BigInteger num;
 
   /** The denominator of the fraction. Must be non-negative. */
-  BigInteger denom;
+  private BigInteger denom;
+
+  /** The value of 0 used to determine if a character is a number.*/
+  private static final int ZERO_ASCII_VALUE = 48;
+
+  /** The value of 9 used to determine if a character is a number.*/
+  private static final int NINE_ASCII_VALUE = 57;
 
   // +--------------+-------------------------------------------------
   // | Constructors |
@@ -46,7 +52,8 @@ public class BigFraction {
    *                    The denominator of the fraction.
    */
   public BigFraction(int numerator, int denominator) {
-    BigInteger greatestCommonDivisor = BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator));
+    BigInteger greatestCommonDivisor =
+        BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator));
     this.num = BigInteger.valueOf(numerator).divide(greatestCommonDivisor);
     this.denom = BigInteger.valueOf(denominator).divide(greatestCommonDivisor);
   } // BigFraction(int, int)
@@ -84,7 +91,7 @@ public class BigFraction {
    * Build a new BigFraction with only a numerator and no denominator.
    * This is to check for the case that a whole number is to be
    * converted to a fraction.
-   * 
+   *
    * @param number
    *               Whole number to be converted to a BigFraction.
    */
@@ -102,7 +109,7 @@ public class BigFraction {
    * @return true if it is a number, false otherwise.
    */
   public static boolean isNumber(char c) {
-    if (c >= 48 && c <= 57) {
+    if (c >= ZERO_ASCII_VALUE && c <= NINE_ASCII_VALUE) {
       return true;
     } // if
     return false;
@@ -150,7 +157,7 @@ public class BigFraction {
    * Multiplies the fraction that the method is called on by
    * the fraction in the parameter.
    * @param multiplend
-   * One of the fractions to be multiplied. 
+   * One of the fractions to be multiplied.
    * @return BigFraction of the result of multiplication.
    */
   public BigFraction multiply(BigFraction multiplend) {
@@ -163,7 +170,7 @@ public class BigFraction {
    * Divides the fraction that the method is called on by
    * the fraction in the parameter.
    * @param dividend
-   * One of the fractions to be divided. 
+   * One of the fractions to be divided.
    * @return BigFraction of the result of division.
    */
   public BigFraction divide(BigFraction dividend) {
@@ -181,7 +188,8 @@ public class BigFraction {
    * @return BigFraction of the result of subtraction.
    */
   public BigFraction subtract(BigFraction subtractend) {
-    BigInteger resultNumerator = (this.num.multiply(subtractend.denom)).subtract(subtractend.num.multiply(this.denom));
+    BigInteger resultNumerator =
+        (this.num.multiply(subtractend.denom)).subtract(subtractend.num.multiply(this.denom));
     BigInteger resultDenominator = this.denom.multiply(subtractend.denom);
     return (new BigFraction(resultNumerator, resultDenominator)).simplify();
   } // subtract(BigFraction)
